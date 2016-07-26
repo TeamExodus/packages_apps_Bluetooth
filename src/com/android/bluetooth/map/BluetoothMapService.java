@@ -623,17 +623,15 @@ public class BluetoothMapService extends ProfileService {
         } catch (MalformedMimeTypeException e) {
             Log.e(TAG, "Wrong mime type!!!", e);
         }
-        if (!mRegisteredMapReceiver) {
-            try {
-                registerReceiver(mMapReceiver, filter);
-                // We need WRITE_SMS permission to handle messages in
-                // actionMessageSentDisconnected()
-                registerReceiver(mMapReceiver, filterMessageSent,
-                    Manifest.permission.WRITE_SMS, null);
-                mRegisteredMapReceiver = true;
-            } catch (Exception e) {
-                Log.e(TAG,"Unable to register map receiver",e);
-            }
+
+        try {
+            registerReceiver(mMapReceiver, filter);
+            // We need WRITE_SMS permission to handle messages in
+            // actionMessageSentDisconnected()
+            registerReceiver(mMapReceiver, filterMessageSent,
+                Manifest.permission.WRITE_SMS, null);
+        } catch (Exception e) {
+            Log.w(TAG,"Unable to register map receiver",e);
         }
         mAdapter = BluetoothAdapter.getDefaultAdapter();
         mAppObserver = new BluetoothMapAppObserver(this, this);
